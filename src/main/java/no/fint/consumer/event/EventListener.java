@@ -72,9 +72,6 @@ public class EventListener implements FintEventListener {
                 });
             }
             return;
-        } else if (event.isHealthCheck()) {
-            log.debug("Ignoring health check.");
-            return;
         }
         if (statusCache.containsKey(event.getCorrId())) {
             statusCache.put(event.getCorrId(), event);
@@ -84,6 +81,10 @@ public class EventListener implements FintEventListener {
         }
         if (event.getOperation() == Operation.VALIDATE) {
             log.debug("Ignoring validation event.");
+            return;
+        }
+        if (event.isHealthCheck()) {
+            log.debug("Ignoring health check.");
             return;
         }
         if (event.getResponseStatus() == ResponseStatus.REJECTED || event.getResponseStatus() == ResponseStatus.ERROR) {
